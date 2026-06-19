@@ -1,0 +1,333 @@
+.visualizerContainer {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-card);
+  height: 100%;
+}
+
+.visualizerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-sm);
+}
+
+.stepLabel {
+  font: var(--text-label);
+  color: var(--accent-primary-hover);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.stepTitle {
+  font: var(--text-heading-sm);
+  margin-top: 2px;
+}
+
+.inputInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--bg-primary);
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.inputBadge {
+  font: var(--text-label);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.inputCode {
+  font: var(--text-code);
+  color: var(--accent-tertiary-light);
+}
+
+.canvasArea {
+  flex: 1;
+  min-height: 200px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  border: 1px solid var(--border-color);
+  overflow: auto;
+}
+
+.svgWrapper {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* SVG Elements Styling */
+.svgBox {
+  stroke: var(--border-color);
+  stroke-width: 1.5;
+  transition: all var(--transition-fast);
+}
+
+.svgBoxHighlighted {
+  stroke: var(--accent-primary);
+  stroke-width: 2.5;
+}
+
+.svgBoxInWindow {
+  stroke: var(--accent-primary-hover);
+}
+
+.svgBoxText {
+  fill: var(--text-primary);
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-anchor: middle;
+  transition: fill var(--transition-fast);
+}
+
+.svgBoxTextHighlighted {
+  fill: var(--text-on-accent);
+}
+
+.svgIndexText {
+  fill: var(--text-muted);
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  text-anchor: middle;
+}
+
+.svgWindow {
+  fill: rgba(233, 69, 96, 0.05);
+  stroke: var(--accent-primary);
+  stroke-width: 2;
+  stroke-dasharray: 4, 4;
+}
+
+/* Pointers SVG styles */
+.svgArrow {
+  fill: none;
+  transition: all var(--transition-base);
+}
+
+.svgArrowLeft {
+  stroke: var(--accent-tertiary-light);
+}
+
+.svgArrowRight {
+  stroke: var(--accent-primary);
+}
+
+.svgPointerBadge {
+  transition: all var(--transition-base);
+}
+
+.svgBadgeLeft {
+  fill: var(--accent-tertiary-light);
+}
+
+.svgBadgeRight {
+  fill: var(--accent-primary);
+}
+
+.svgPointerText {
+  fill: var(--text-on-accent);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+/* Stub Visualizer */
+.stubVisualizer {
+  width: 100%;
+  max-width: 400px;
+}
+
+.stubSvg text {
+  font-family: var(--font-body);
+}
+
+.stubSvg text[fill="var(--text-primary)"] {
+  font-family: var(--font-headline);
+}
+
+/* Narration overlay */
+.narration {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+.narrationIcon {
+  width: 24px;
+  height: 24px;
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.narrationIcon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.narrationText {
+  font: var(--text-body-sm);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Controls CSS */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.mainControls {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.controlBtn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.controlBtn:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  border-color: var(--text-secondary);
+}
+
+.controlBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.controlBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.playBtn {
+  border-color: var(--accent-primary-glow);
+  background: rgba(233, 69, 96, 0.05);
+}
+
+.playBtn:hover:not(:disabled) {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--text-on-accent);
+}
+
+.sliderWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  width: 100%;
+  -webkit-appearance: none;
+  background: var(--bg-primary);
+  height: 6px;
+  border-radius: var(--radius-full);
+  outline: none;
+  border: 1px solid var(--border-color);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: var(--accent-primary);
+  cursor: pointer;
+  border: 2px solid var(--bg-surface);
+  transition: transform var(--transition-fast);
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.emptyState {
+  color: var(--text-muted);
+  font: var(--text-body-sm);
+}
+
+@media (max-width: 576px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+  .sliderWrapper {
+    width: 100%;
+  }
+}
+
+/* Reduced Motion Overrides */
+@media (prefers-reduced-motion: reduce) {
+  .svgBox,
+  .svgBoxText,
+  .svgArrow,
+  .svgPointerBadge,
+  .controlBtn,
+  .slider,
+  .slider::-webkit-slider-thumb {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+.reducedMotion .svgBox,
+.reducedMotion .svgBoxText,
+.reducedMotion .svgArrow,
+.reducedMotion .svgPointerBadge,
+.reducedMotion .controlBtn,
+.reducedMotion .slider,
+.reducedMotion .slider::-webkit-slider-thumb {
+  transition: none !important;
+  transform: none !important;
+  animation: none !important;
+}

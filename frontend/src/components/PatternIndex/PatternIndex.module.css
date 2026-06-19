@@ -1,0 +1,356 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  animation: fadeIn var(--transition-slow);
+}
+
+.heroSection {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.title {
+  font: var(--text-display);
+  letter-spacing: var(--letter-spacing-tight);
+  margin-bottom: var(--space-md);
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-primary-hover));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font: var(--text-body-lg);
+  color: var(--text-secondary);
+}
+
+.progressCard {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-base), border-color var(--transition-base);
+}
+
+.progressCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-glass);
+}
+
+.progressText h2 {
+  font: var(--text-heading-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.progressText p {
+  font: var(--text-body-sm);
+  color: var(--text-secondary);
+}
+
+.progressStats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.progressCircle {
+  width: 70px;
+  height: 70px;
+}
+
+.circularChart {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.circleBg {
+  fill: none;
+  stroke: var(--bg-tertiary);
+  stroke-width: 3.5;
+}
+
+.circle {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  transition: stroke-dasharray var(--transition-slow);
+}
+
+.percentage {
+  fill: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 8px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.statsLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.statsCount {
+  font: var(--text-heading-md);
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.statsSub {
+  font: var(--text-label);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.categoriesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.categoryCard {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.categoryHeader {
+  width: 100%;
+  padding: var(--space-lg);
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.categoryHeader:hover {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.categoryInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.categoryIcon {
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.categoryTitle {
+  font: var(--text-heading-sm);
+  margin-bottom: 2px;
+}
+
+.categoryDesc {
+  font: var(--text-body-sm);
+  color: var(--text-secondary);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.categoryProgressBadge {
+  font: var(--text-label);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+}
+
+.chevron {
+  width: 20px;
+  height: 20px;
+  color: var(--text-secondary);
+  transition: transform var(--transition-base);
+}
+
+.patternsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-md);
+  padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
+  opacity: 1;
+  max-height: 2000px;
+  transition: opacity var(--transition-base), max-height var(--transition-slow), padding var(--transition-base);
+}
+
+/* Collapsed state */
+.collapsed .chevron {
+  transform: rotate(-90deg);
+}
+
+.collapsed .patternsGrid {
+  max-height: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Pattern Card */
+.patternCard {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  text-decoration: none;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-card);
+}
+
+.patternCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.cardCompleted {
+  border-color: var(--accent-tertiary-light);
+}
+
+.cardCompleted:hover {
+  border-color: var(--accent-tertiary-light);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardEmoji {
+  font-size: 1.5rem;
+}
+
+.difficultyBadge {
+  font: var(--text-label);
+  text-transform: uppercase;
+  padding: 2px var(--space-sm);
+  border-radius: var(--radius-full);
+}
+
+.beginner {
+  background: rgba(15, 155, 142, 0.15);
+  color: var(--accent-tertiary-light);
+}
+
+.intermediate {
+  background: rgba(123, 104, 238, 0.15);
+  color: var(--accent-secondary-light);
+}
+
+.advanced {
+  background: rgba(233, 69, 96, 0.15);
+  color: var(--accent-primary);
+}
+
+.cardTitle {
+  font: var(--text-heading-sm);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+}
+
+.completedBadge {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-tertiary-light);
+  flex-shrink: 0;
+}
+
+.cardSummary {
+  font: var(--text-body-sm);
+  color: var(--text-secondary);
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: auto;
+}
+
+.tag {
+  font: var(--text-label);
+  color: var(--text-muted);
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-xl);
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-xl);
+  color: var(--text-secondary);
+}
+
+.emptyIcon {
+  width: 48px;
+  height: 48px;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.emptyState h3 {
+  font: var(--text-heading-sm);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+@media (max-width: 992px) {
+  .heroSection {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+@media (max-width: 576px) {
+  .categoryHeader {
+    padding: var(--space-md);
+  }
+  .patternsGrid {
+    padding: 0 var(--space-md) var(--space-md) var(--space-md);
+    grid-template-columns: 1fr;
+  }
+  .progressCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

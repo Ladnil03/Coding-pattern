@@ -1,0 +1,306 @@
+.challengeCard {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-md);
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.badge {
+  font: var(--text-label);
+  color: var(--accent-primary-hover);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.title {
+  font: var(--text-heading-sm);
+  font-weight: 700;
+}
+
+.completionToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font: var(--text-label);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.completionToggle:hover {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+.completed {
+  background: rgba(15, 155, 142, 0.08);
+  border-color: var(--accent-tertiary-light);
+  color: var(--accent-tertiary-light);
+}
+
+.completed:hover {
+  border-color: var(--accent-tertiary-light);
+  color: var(--accent-tertiary-light);
+  background: rgba(15, 155, 142, 0.12);
+}
+
+.checkboxIcon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.completed .checkboxIcon {
+  border-color: var(--accent-tertiary-light);
+  background: var(--accent-tertiary-light);
+  color: var(--text-on-accent);
+}
+
+.checkboxIcon svg {
+  width: 10px;
+  height: 10px;
+}
+
+.question {
+  font: var(--text-body);
+  color: var(--text-primary);
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  width: 100%;
+}
+
+.option:hover:not(:disabled) {
+  border-color: var(--accent-primary-glow);
+  background: var(--bg-tertiary);
+}
+
+.selected {
+  border-color: var(--accent-primary-hover);
+  background: rgba(233, 69, 96, 0.03);
+}
+
+.correct {
+  border-color: var(--accent-tertiary-light) !important;
+  background: rgba(15, 155, 142, 0.05) !important;
+  color: var(--text-primary);
+}
+
+.incorrect {
+  border-color: var(--accent-primary) !important;
+  background: rgba(233, 69, 96, 0.05) !important;
+}
+
+.radioCircle {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--text-muted);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color var(--transition-fast);
+}
+
+.selected .radioCircle {
+  border-color: var(--accent-primary-hover);
+}
+
+.correct .radioCircle {
+  border-color: var(--accent-tertiary-light);
+}
+
+.incorrect .radioCircle {
+  border-color: var(--accent-primary);
+}
+
+.radioInner {
+  width: 10px;
+  height: 10px;
+  background: var(--accent-primary-hover);
+  border-radius: var(--radius-full);
+}
+
+.correct .radioInner {
+  background: var(--accent-tertiary-light);
+}
+
+.incorrect .radioInner {
+  background: var(--accent-primary);
+}
+
+.optionText {
+  font: var(--text-body-sm);
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-sm);
+}
+
+.hintBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font: var(--text-label);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.hintBtn:hover {
+  color: var(--accent-primary-hover);
+}
+
+.checkBtn {
+  background: var(--accent-primary);
+  color: var(--text-on-accent);
+  font: var(--text-label);
+  font-weight: 600;
+  padding: var(--space-sm) var(--space-xl);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.checkBtn:hover:not(:disabled) {
+  background: var(--accent-primary-hover);
+  box-shadow: var(--shadow-glow);
+}
+
+.checkBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hintBox {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  font: var(--text-body-sm);
+  color: var(--text-secondary);
+  animation: fadeIn var(--transition-fast);
+}
+
+.feedbackBox {
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  animation: fadeIn var(--transition-fast);
+}
+
+.feedbackCorrect {
+  background: rgba(15, 155, 142, 0.05);
+  border: 1px solid var(--accent-tertiary);
+}
+
+.feedbackIncorrect {
+  background: rgba(233, 69, 96, 0.05);
+  border: 1px solid var(--accent-primary);
+}
+
+.feedbackHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.feedbackIcon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feedbackCorrect .feedbackIcon {
+  color: var(--accent-tertiary-light);
+}
+
+.feedbackIncorrect .feedbackIcon {
+  color: var(--accent-primary);
+}
+
+.feedbackHeader h3 {
+  font: var(--text-heading-sm);
+  font-weight: 700;
+  margin: 0;
+}
+
+.explanationText {
+  font: var(--text-body-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.celebrationBanner {
+  margin-top: var(--space-xs);
+  padding-top: var(--space-sm);
+  border-top: 1px solid rgba(15, 155, 142, 0.15);
+  font: var(--text-body-sm);
+  font-weight: 600;
+  color: var(--accent-tertiary-light);
+}
+
+@media (max-width: 576px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .completionToggle {
+    align-self: flex-start;
+  }
+}

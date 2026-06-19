@@ -1,0 +1,132 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  color: var(--text-primary);
+}
+
+.title {
+  font: var(--text-heading-lg);
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.metaCard {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  box-shadow: var(--shadow-card);
+}
+
+.metaLabel {
+  font: var(--text-label);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.metaValue {
+  font: var(--text-heading-sm);
+  font-weight: 600;
+  color: var(--accent-primary-hover);
+}
+
+.content {
+  font: var(--text-body);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.content h2,
+.content h3 {
+  font: var(--text-heading-sm);
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xs);
+  color: var(--text-primary);
+}
+
+.content p {
+  margin-bottom: var(--space-xs);
+  color: var(--text-secondary);
+}
+
+.content code {
+  font: var(--text-code);
+  background: var(--bg-secondary);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  color: var(--accent-primary-hover);
+}
+
+.content ul,
+.content ol {
+  padding-left: var(--space-xl);
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.content blockquote {
+  border-left: 4px solid var(--accent-primary);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-secondary);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.whenToUseSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.sectionTitle {
+  font: var(--text-heading-sm);
+  font-weight: 600;
+}
+
+.useList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.useItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  color: var(--text-secondary);
+  font: var(--text-body-sm);
+}
+
+.useItem span {
+  padding-top: 1px;
+}
+
+.checkIcon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-tertiary-light);
+  flex-shrink: 0;
+}
+
+@media (max-width: 576px) {
+  .metaGrid {
+    grid-template-columns: 1fr;
+  }
+}
