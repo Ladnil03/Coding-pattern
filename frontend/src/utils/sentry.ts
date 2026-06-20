@@ -37,7 +37,7 @@ export function captureException(error: unknown, context?: Record<string, any>):
   const dsn = import.meta.env.VITE_SENTRY_DSN;
   if (dsn) {
     import('@sentry/react').then((Sentry) => {
-      Sentry.withScope((scope) => {
+      Sentry.withScope((scope: any) => {
         if (context) {
           scope.setExtras(context);
         }

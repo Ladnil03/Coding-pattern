@@ -1,0 +1,173 @@
+// src/prisma/schema.prisma
+// This is the main Prisma schema file
+// It defines the database schema for the Coding Pattern Learning Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+ datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and user management
+model User {
+  id              String    @id @default(uuid())
+  name            String
+  email           String    @unique
+  passwordHash    String
+  provider        Provider
+  avatar          String?
+  role            Role      @default(USER)
+  isVerified      Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  accounts        Account[]
+  sessions        Session[]
+  progress        Progress[]
+  userPreferences UserPreferences?
+
+  @@map("users")
+}
+
+// Account model for OAuth providers
+model Account {
+  id                String  @id @default(uuid())
+  userId           String
+  type             String
+  provider         Provider
+  providerAccountId String
+  refreshToken     String?
+  accessToken      String?
+  expiresAt        Int?
+  tokenType        String?
+  scope            String?
+  idToken          String?
+
+  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+// Session model for JWT sessions
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String    @unique
+  userId       String
+  expires      DateTime
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// Progress tracking model
+model Progress {
+  id                  String     @id @default(uuid())
+  userId             String
+  patternId          String
+  completionPercentage Int       @default(0)
+  completed          Boolean    @default(false)
+  lastViewed         DateTime   @default(now())
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  user               User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pattern            Pattern    @relation(fields: [patternId], references: [id])
+
+  @@unique([userId, patternId])
+  @@map("progress")
+}
+
+// Pattern model for coding patterns
+model Pattern {
+  id          String     @id @default(uuid())
+  slug        String     @unique
+  title       String
+  category    String
+  difficulty  Difficulty
+  description String
+  content     String
+  estimatedTime Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  progress    Progress[]
+  challenges  Challenge[]
+  visualizations Visualization[]
+
+  @@map("patterns")
+}
+
+// Challenge model for pattern questions
+model Challenge {
+  id          String    @id @default(uuid())
+  patternId   String
+  question    String
+  options     String[]  // JSON array of strings
+  answer      String
+  hint        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  pattern     Pattern   @relation(fields: [patternId], references: [id], onDelete: Cascade)
+
+  @@map("challenges")
+}
+
+// Visualization model for pattern traces
+model Visualization {
+  id          String    @id @default(uuid())
+  patternId   String
+  traceJson   Json      // JSON object containing visualization data
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  pattern     Pattern   @relation(fields: [patternId], references: [id], onDelete: Cascade)
+
+  @@map("visualizations")
+}
+
+// User preferences model
+model UserPreferences {
+  id                    String    @id @default(uuid())
+  userId               String    @unique
+  theme                String    @default("light")
+  reduceMotion         Boolean   @default(false)
+  notificationSettings Json      // JSON object for notification preferences
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+// Enums
+enum Provider {
+  EMAIL
+  GOOGLE
+  GITHUB
+
+  @@map("providers")
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+
+  @@map("roles")
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+
+  @@map("difficulties")
+}

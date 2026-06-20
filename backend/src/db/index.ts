@@ -25,14 +25,12 @@ pool.on('connect', () => {
   // Connection succeeded
 });
 
-pool.on('error', (err) => {
+pool.on('error', (err: any) => {
   console.error('Unexpected error on idle database client', err);
 });
 
 export const query = async (text: string, params?: any[]) => {
-  const start = Date.now();
   const res = await pool.query(text, params);
-  const duration = Date.now() - start;
   // Can log query metrics here for telemetry
   return res;
 };

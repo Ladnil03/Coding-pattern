@@ -1,6 +1,19 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
-import type { User, Session } from '@supabase/supabase-js';
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  provider: 'EMAIL' | 'GOOGLE' | 'GITHUB';
+  role: 'USER' | 'ADMIN' | 'MODERATOR';
+  avatar?: string;
+  is_anonymous?: boolean;
+}
+
+export interface Session {
+  access_token: string;
+  user: User;
+}
 
 interface AuthContextType {
   user: User | null;
@@ -8,94 +21,83 @@ interface AuthContextType {
   loading: boolean;
   signInAnonymously: () => Promise<void>;
   signOut: () => Promise<void>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  signup: (name: string, email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  googleLogin: (idToken: string) => Promise<{ success: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-// Create supabase client only if configuration exists, otherwise fallback to mock
-const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!supabase) {
-      console.warn('Supabase URL/Key missing. Auth context operating in local mock mode.');
-      
-      // Auto-login dummy anonymous user in mock mode for development convenience
-      const savedMockUser = localStorage.getItem('mock_auth_user');
-      if (savedMockUser) {
-        const u = JSON.parse(savedMockUser);
-        setUser(u);
-        setSession({
-          access_token: 'mock-jwt-token-for-dev',
-          token_type: 'bearer',
-          expires_in: 3600,
-          refresh_token: 'mock-refresh-token',
-          user: u
-        } as any);
+  // Check backend session on mount
+  const checkSession = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/me`, {
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data) {
+          const fetchedUser = data.data;
+          setUser(fetchedUser);
+          
+          // Generate a client-side mock JWT token or read cookie
+          // To keep compatibility, we expose a dummy token if cookies handle auth
+          setSession({
+            access_token: 'cookie-session-active',
+            user: fetchedUser,
+          });
+        }
+      } else {
+        // Fallback to local storage anonymous user if saved
+        const savedMockUser = localStorage.getItem('mock_auth_user');
+        if (savedMockUser) {
+          const u = JSON.parse(savedMockUser);
+          setUser(u);
+          setSession({
+            access_token: 'mock-jwt-token-for-dev',
+            user: u,
+          });
+        }
       }
+    } catch (error) {
+      console.error('Session check failed:', error);
+    } finally {
       setLoading(false);
-      return;
     }
+  };
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
+  useEffect(() => {
+    checkSession();
   }, []);
 
   const signInAnonymously = async () => {
     setLoading(true);
     try {
-      if (!supabase) {
-        // Mock anonymous sign in
-        const mockUserId = '11111111-2222-3333-4444-555555555555';
-        const dummyUser = {
-          id: mockUserId,
-          email: '',
-          is_anonymous: true,
-          aud: 'authenticated',
-          role: 'authenticated',
-          created_at: new Date().toISOString(),
-          app_metadata: {},
-          user_metadata: {},
-        } as User;
+      const mockUserId = '11111111-2222-3333-4444-555555555555';
+      const dummyUser: User = {
+        id: mockUserId,
+        name: 'Guest Learner',
+        email: '',
+        is_anonymous: true,
+        provider: 'EMAIL',
+        role: 'USER',
+      };
 
-        localStorage.setItem('mock_auth_user', JSON.stringify(dummyUser));
-        setUser(dummyUser);
-        setSession({
-          access_token: 'mock-jwt-token-for-dev',
-          token_type: 'bearer',
-          expires_in: 3600,
-          refresh_token: 'mock-refresh-token',
-          user: dummyUser
-        } as any);
-        return;
-      }
-
-      const { error } = await supabase.auth.signInAnonymously();
-      if (error) throw error;
+      localStorage.setItem('mock_auth_user', JSON.stringify(dummyUser));
+      setUser(dummyUser);
+      setSession({
+        access_token: 'mock-jwt-token-for-dev',
+        user: dummyUser,
+      });
     } catch (err) {
       console.error('Anonymous sign-in failed:', err);
       throw err;
@@ -104,27 +106,112 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signOut = async () => {
+  const login = async (email: string, password: string) => {
     setLoading(true);
     try {
-      if (!supabase) {
-        localStorage.removeItem('mock_auth_user');
-        setUser(null);
-        setSession(null);
-        return;
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setUser(data.data);
+        setSession({
+          access_token: 'cookie-session-active',
+          user: data.data,
+        });
+        localStorage.removeItem('mock_auth_user'); // Remove mock if login succeeds
+        return { success: true };
+      } else {
+        return { success: false, error: data.message || 'Login failed' };
       }
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-    } catch (err) {
-      console.error('Sign-out failed:', err);
-      throw err;
+    } catch (error: any) {
+      return { success: false, error: error.message || 'Network error occurred' };
     } finally {
       setLoading(false);
     }
   };
 
+  const signup = async (name: string, email: string, password: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setUser(data.data);
+        setSession({
+          access_token: 'cookie-session-active',
+          user: data.data,
+        });
+        localStorage.removeItem('mock_auth_user');
+        return { success: true };
+      } else {
+        return { success: false, error: data.message || 'Registration failed' };
+      }
+    } catch (error: any) {
+      return { success: false, error: error.message || 'Network error occurred' };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const googleLogin = async (idToken: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setUser(data.data);
+        setSession({
+          access_token: 'cookie-session-active',
+          user: data.data,
+        });
+        localStorage.removeItem('mock_auth_user');
+        return { success: true };
+      } else {
+        return { success: false, error: data.message || 'Google authentication failed' };
+      }
+    } catch (error: any) {
+      return { success: false, error: error.message || 'Network error occurred' };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signOut = async () => {
+    setLoading(true);
+    try {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch (error) {
+      console.error('Logout error on server:', error);
+    } finally {
+      localStorage.removeItem('mock_auth_user');
+      setUser(null);
+      setSession(null);
+      setLoading(false);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, session, loading, signInAnonymously, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, signInAnonymously, signOut, login, signup, googleLogin }}>
       {children}
     </AuthContext.Provider>
   );
@@ -132,7 +219,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
