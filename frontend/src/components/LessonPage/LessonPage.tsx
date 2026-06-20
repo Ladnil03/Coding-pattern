@@ -42,7 +42,7 @@ export const LessonPage: React.FC = () => {
       ? lesson.visualization.steps[activeStepIdx].logicalStepId
       : null;
 
-  const isStub = pattern.id !== 'sliding-window' && pattern.id !== 'two-pointers';
+  const isStub = !lesson.visualization.steps || lesson.visualization.steps.length === 0;
 
   return (
     <div className={styles.lessonLayout}>

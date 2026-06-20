@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { VisualizationConfig, StepSnapshot } from '../../types/visualization';
 import styles from './CodeVisualizer.module.css';
+import { ThreeVisualizer } from './ThreeVisualizer';
 
 interface CodeVisualizerProps {
   config: VisualizationConfig;
@@ -16,6 +17,7 @@ export const CodeVisualizer: React.FC<CodeVisualizerProps> = ({
   prefersReducedMotion = false,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [viewMode, setViewMode] = useState<'2d' | '3d'>('3d');
   const playTimerRef = useRef<number | null>(null);
 
   const { steps, inputLabel, type } = config;
@@ -218,30 +220,50 @@ export const CodeVisualizer: React.FC<CodeVisualizerProps> = ({
           <span className={styles.stepLabel}>Step {activeStepIdx + 1} of {steps.length}</span>
           <h2 className={styles.stepTitle}>{label}</h2>
         </div>
-        <div className={styles.inputInfo}>
-          <span className={styles.inputBadge}>Input</span>
-          <code className={styles.inputCode}>{inputLabel}</code>
+        <div className={styles.headerControls}>
+          <div className={styles.toggleContainer}>
+            <button
+              className={`${styles.toggleBtn} ${viewMode === '2d' ? styles.activeToggle : ''}`}
+              onClick={() => setViewMode('2d')}
+            >
+              2D View
+            </button>
+            <button
+              className={`${styles.toggleBtn} ${viewMode === '3d' ? styles.activeToggle : ''}`}
+              onClick={() => setViewMode('3d')}
+            >
+              3D View
+            </button>
+          </div>
+          <div className={styles.inputInfo}>
+            <span className={styles.inputBadge}>Input</span>
+            <code className={styles.inputCode}>{inputLabel}</code>
+          </div>
         </div>
       </div>
 
       <div className={styles.canvasArea} role="img" aria-label={`Visualization for ${label}. ${narration}`}>
-        {type === 'array' ? (
-          <div className={styles.svgWrapper}>{renderArrayVisualization()}</div>
+        {viewMode === '3d' ? (
+          <ThreeVisualizer config={config} activeStepIdx={activeStepIdx} />
         ) : (
-          <div className={styles.stubVisualizer}>
-            <svg viewBox="0 0 400 200" className={styles.stubSvg}>
-              <rect width="400" height="200" rx="12" fill="var(--bg-secondary)" stroke="var(--border-color)" />
-              <text x="200" y="80" textAnchor="middle" fill="var(--text-primary)" fontSize="16" fontWeight="bold">
-                {type.toUpperCase()} Visualization Stub
-              </text>
-              <text x="200" y="110" textAnchor="middle" fill="var(--text-secondary)" fontSize="13">
-                Interactivity and step-rendering active.
-              </text>
-              <text x="200" y="130" textAnchor="middle" fill="var(--text-muted)" fontSize="12">
-                Active Step ID: {currentStep.logicalStepId}
-              </text>
-            </svg>
-          </div>
+          type === 'array' ? (
+            <div className={styles.svgWrapper}>{renderArrayVisualization()}</div>
+          ) : (
+            <div className={styles.stubVisualizer}>
+              <svg viewBox="0 0 400 200" className={styles.stubSvg}>
+                <rect width="400" height="200" rx="12" fill="var(--bg-secondary)" stroke="var(--border-color)" />
+                <text x="200" y="80" textAnchor="middle" fill="var(--text-primary)" fontSize="16" fontWeight="bold">
+                  {type.toUpperCase()} 2D Visualization
+                </text>
+                <text x="200" y="110" textAnchor="middle" fill="var(--text-secondary)" fontSize="13">
+                  Check out the interactive 3D View for full structural rendering!
+                </text>
+                <text x="200" y="130" textAnchor="middle" fill="var(--text-muted)" fontSize="12">
+                  Active Step ID: {currentStep.logicalStepId}
+                </text>
+              </svg>
+            </div>
+          )
         )}
       </div>
 

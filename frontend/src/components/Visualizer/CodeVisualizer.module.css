@@ -331,3 +331,40 @@
   transform: none !important;
   animation: none !important;
 }
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.toggleContainer {
+  display: flex;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  padding: 2px;
+}
+
+.toggleBtn {
+  font: var(--text-label);
+  padding: 6px var(--space-md);
+  border-radius: var(--radius-full);
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.toggleBtn:hover {
+  color: var(--text-primary);
+}
+
+.activeToggle {
+  background: var(--accent-primary);
+  color: var(--text-on-accent) !important;
+  font-weight: 600;
+  box-shadow: var(--shadow-glow);
+}

@@ -5,6 +5,8 @@ import { categories } from '../../data/categories';
 import { patterns } from '../../data/patterns';
 import styles from './PatternIndex.module.css';
 
+import { ThreeHeroBackground } from './ThreeHeroBackground';
+
 export const PatternIndex: React.FC = () => {
   const { isCompleted, getCategoryProgress, getOverallProgress } = useProgress();
   const [searchParams] = useSearchParams();
@@ -26,10 +28,10 @@ export const PatternIndex: React.FC = () => {
   const getFilteredPatterns = (patternIds: string[]) => {
     return patterns.filter(
       (p) =>
-        patternIds.includes(p.id) &&
-        (p.title.toLowerCase().includes(searchQuery) ||
-          p.summary.toLowerCase().includes(searchQuery) ||
-          p.tags.some((tag) => tag.toLowerCase().includes(searchQuery)))
+          patternIds.includes(p.id) &&
+          (p.title.toLowerCase().includes(searchQuery) ||
+            p.summary.toLowerCase().includes(searchQuery) ||
+            p.tags.some((tag) => tag.toLowerCase().includes(searchQuery)))
     );
   };
 
@@ -40,45 +42,50 @@ export const PatternIndex: React.FC = () => {
   return (
     <div className={styles.container}>
       <section className={styles.heroSection}>
-        <h1 className={styles.title}>Master Algorithmic Patterns</h1>
-        <p className={styles.subtitle}>
-          Stop memorizing single solutions. Learn the underlying structural patterns that solve hundreds of coding interview questions.
-        </p>
-
-        {/* Global Progress Callout */}
-        <div className={styles.progressCard}>
-          <div className={styles.progressText}>
-            <h2>Your Curriculum Progress</h2>
-            <p>
-              Complete conceptual checks to finish patterns. Persistent via localStorage.
+        <ThreeHeroBackground />
+        <div className={styles.heroContent}>
+          <div className={styles.heroText}>
+            <h1 className={styles.title}>Master Algorithmic Patterns</h1>
+            <p className={styles.subtitle}>
+              Stop memorizing single solutions. Learn the underlying structural patterns that solve hundreds of coding interview questions.
             </p>
           </div>
-          <div className={styles.progressStats}>
-            <div className={styles.progressCircle}>
-              <svg viewBox="0 0 36 36" className={styles.circularChart}>
-                <path
-                  className={styles.circleBg}
-                  d="M18 2.0845
-                    a 15.9155 15.9155 0 0 1 0 31.831
-                    a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <path
-                  className={styles.circle}
-                  strokeDasharray={`${overall.percentage}, 100`}
-                  d="M18 2.0845
-                    a 15.9155 15.9155 0 0 1 0 31.831
-                    a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <text x="18" y="20.35" className={styles.percentage}>
-                  {overall.percentage}%
-                </text>
-              </svg>
+
+          {/* Global Progress Callout */}
+          <div className={styles.progressCard}>
+            <div className={styles.progressText}>
+              <h2>Your Curriculum Progress</h2>
+              <p>
+                Complete conceptual checks to finish patterns. Persistent via localStorage.
+              </p>
             </div>
-            <div className={styles.statsLabel}>
-              <span className={styles.statsCount}>
-                {overall.completed} / {overall.total}
-              </span>
-              <span className={styles.statsSub}>Patterns Finished</span>
+            <div className={styles.progressStats}>
+              <div className={styles.progressCircle}>
+                <svg viewBox="0 0 36 36" className={styles.circularChart}>
+                  <path
+                    className={styles.circleBg}
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    className={styles.circle}
+                    strokeDasharray={`${overall.percentage}, 100`}
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <text x="18" y="20.35" className={styles.percentage}>
+                    {overall.percentage}%
+                  </text>
+                </svg>
+              </div>
+              <div className={styles.statsLabel}>
+                <span className={styles.statsCount}>
+                  {overall.completed} / {overall.total}
+                </span>
+                <span className={styles.statsSub}>Patterns Finished</span>
+              </div>
             </div>
           </div>
         </div>
